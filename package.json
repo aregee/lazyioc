@@ -1,7 +1,7 @@
 {
   "name": "ioc",
   "version": "1.0.0",
-  "description": "Lightweight vanilla javascript Progressive Webapp framework",
+  "description": "Lightweight vanilla javascript ioc container",
   "main": "bundle/index.js",
   "scripts": {
     "prod": "export NODE_SHELL_ENV=production && ./node_modules/webpack/bin/webpack.js --config webpack.config.js --progress ",
@@ -9,14 +9,11 @@
   },
   "keywords": [
     "vanilla",
-    "pwa",
-    "progressive",
+    "ioc",
+    "dependency injection",
+    "di",
     "web",
-    "apps",
-    "react",
-    "angular",
-    "vue",
-    "mithril"
+    "apps"
   ],
   "author": "Rahul Gaur",
   "license": "MIT",
@@ -39,8 +36,5 @@
     "webpack-dev-server": "^1.16.5"
   },
   "dependencies": {
-    "single-spa": "^3.5.0",
-    "single-spa-react": "^2.0.4",
-    "universal-router": "6.0.0"
   }
 }
