@@ -1,6 +1,6 @@
 {
-  "name": "appShellContainer",
-  "version": "2.2.8",
+  "name": "ioc",
+  "version": "1.0.0",
   "description": "Lightweight vanilla javascript Progressive Webapp framework",
   "main": "bundle/index.js",
   "scripts": {
