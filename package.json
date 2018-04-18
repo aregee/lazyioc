@@ -1,6 +1,6 @@
 {
   "name": "lazyioc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight vanilla javascript ioc container",
   "main": "bundle/index.js",
   "scripts": {
