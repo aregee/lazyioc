@@ -82,12 +82,12 @@ export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, D
     if (typeof name === 'string') {
       let instance = this.modules[name];
       if (!instance) {
-        this.modules[name] = instance = new AppShell();
+        this.modules[name] = instance = new AppShell(name);
         instance.constant('CONTAINER_NAME', name);
       }
       return instance;
     }
-    return new AppShell();
+    return new AppShell(name);
   }
 
   /**
