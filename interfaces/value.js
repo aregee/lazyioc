@@ -14,25 +14,10 @@ export const ValueMixin = (superclass) => class extends superclass {
    value(name, val) {
     let parts = name.split('.');
     name = parts.pop();
+    console.log(this);
     this.defineValue.call(parts.reduce(this.setValueObject, this.container), name, val);
     return this;
   }
-
-  /**
-   * Iterator for setting a plain object literal via defineValue
-   *
-   * @param Object container
-   * @param string name
-   */
-  setValueObject(container, name) {
-    let nestedContainer = container[name];
-    if (!nestedContainer) {
-      nestedContainer = {};
-      this.defineValue.call(container, name, nestedContainer);
-    }
-    return nestedContainer;
-  }
-
   /**
    * Define a mutable property on the container.
    *
@@ -50,5 +35,22 @@ export const ValueMixin = (superclass) => class extends superclass {
       writable: true
     });
   }
+
+  /**
+   * Iterator for setting a plain object literal via defineValue
+   *
+   * @param Object container
+   * @param string name
+   */
+  setValueObject(container, name) {
+    let nestedContainer = container[name];
+    if (!nestedContainer) {
+      nestedContainer = {};
+      this.defineValue.call(container, name, nestedContainer);
+    }
+    return nestedContainer;
+  }
+
+
 
 }

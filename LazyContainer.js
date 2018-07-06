@@ -5,28 +5,10 @@ import { Container, ProviderMixin, FactoryMixin, DecorateMixin, ConstantMixin, M
 
 const uuid = a=>a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, uuid);
 
-export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, DecorateMixin, ConstantMixin, ValueMixin, MiddlewareMixin) {
-  constructor(name) {
-    super(name);
-    this.config = {
-      strict: false
-    };
-    this.id = uuid;
-    this.modules = {};
-    this.decorators = {};
-    this.nested = {};
-    this.providerMap = {};
-    this.originalProviders = {};
-    this.middlewares = {};
-    this.deferred = [];
-    let register = this.register.bind(this);
-    let decorator = this.decorator.bind(this);
-    this.container = {
-      $decorator : decorator,
-      $register : register,
-      $list : this.list.bind(this)
-    };
-  }
+export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, DecorateMixin, ValueMixin, MiddlewareMixin, ConstantMixin) {
+  constructor(name, store) {
+    super(name, store);
+}
 
   /**
    * Iterator used to walk down a nested object.
@@ -54,7 +36,7 @@ export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, D
    * @return Module
    */
   getNestedModule(name) {
-    return this.nested[name] || (this.nested[name] = AppShell.module());
+    return this.nested[name] || (this.nested[name] = this.module());
   }
 
   /**
@@ -78,27 +60,18 @@ export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, D
    * @return Module
    */
 
-  static module(name) {
+  module(name) {
     if (typeof name === 'string') {
       let instance = this.modules[name];
       if (!instance) {
-        this.modules[name] = instance = new AppShell(name);
+        instance = new AppShell(name);
+        this.modules[name] = instance;
         instance.constant('CONTAINER_NAME', name);
       }
       return instance;
     }
-    return new AppShell(name);
-  }
 
-  /**
-   * Clear all named modules.
-   */
-  static clear(name) {
-    if (typeof name === 'string') {
-      delete this.modules[name];
-    } else {
-      this.modules = {};
-    }
+    return new AppShell();
   }
 
 }
