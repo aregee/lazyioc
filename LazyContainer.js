@@ -22,8 +22,8 @@ export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, D
    * @throws Error if Container is unable to resolve the requested service.
    */
   getNested(obj, prop) {
-    let service = obj[prop];
-    if (service === undefined && this.config.strict) {
+    let service = obj[prop] ? obj[prop]: obj.container[prop];
+    if (service === undefined && true) {
       throw new Error('Container was unable to resolve a service.  `' + prop + '` is undefined.');
     }
     return service;

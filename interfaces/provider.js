@@ -156,9 +156,11 @@ export const ProviderMixin = (superclass) => class extends superclass {
    *
    * @return void
    */
-  resetProviders() {
+  resetProviders(providedList=[]) {
     let providers = this.originalProviders;
-    Object.keys(this.originalProviders).forEach(function resetPrvider(provider) {
+    let initalKeyMap = Object.keys(this.originalProviders);
+    let providerList = providedList.length > 0 ?  initalKeyMap.filter(p => providedList.indexOf(p) > -1) : initalKeyMap;
+    providerList.forEach(function resetPrvider(provider) {
       let parts = provider.split('.');
       if (parts.length > 1) {
         this.removeProviderMap.call(this, parts[0]);
@@ -198,7 +200,8 @@ export const ProviderMixin = (superclass) => class extends superclass {
     return this.factory.call(this, name, function GenericFactory() {
       let ServiceCopy = Service;
       if (deps) {
-        let args = deps.map(this.getNestedService.bind(iocinstance), iocinstance.container);
+        let bounderService = iocinstance.getNestedService.bind(iocinstance)
+        let args = deps.map(bounderService, iocinstance.container);
         args.unshift(Service);
         ServiceCopy = Service.bind.apply(Service, args);
       }
