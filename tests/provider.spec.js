@@ -15,15 +15,8 @@ new function(o) {
     describe("when the same key is used twice", function() {
       clone.beforeEach(function() {
         this.appShell = new AppShell("providerTest");
-        let logger = {};
-        logger.count = 0;
-        logger.error = err => {
-          console.count++;
-          // console.log(err);
-        };
-
-        Object.assign(console, logger);
-        this.spy = spyOn(console.error);
+        console.error = spyOn(console.error);
+        // this.spy = console.error;
         this.appShell.provider("same.name", function() {
           this.$get = function(container) {
             return function() {
@@ -34,23 +27,20 @@ new function(o) {
       });
       describe("when the service has not yet been instantiated", function() {
         it("doesn't log an error", function() {
-          let countBefore = this.spy.callCount;
           this.appShell.provider("same.name", function() {});
-          let countAfter = this.spy.callCount;
-          expect(countBefore).equals(countAfter);
+          expect(console.error.callCount).equals(0);
         });
       });
       describe("when the service has already been instantiated", function() {
         clone.beforeEach(function() {
+          console.error = spyOn(console.error);
           this.appShell.container.same.name();
         });
         it("logs an error", function() {
-          let countBefore = console.count;
           this.appShell.provider("same.name", function() {});
-          let countAfter = console.count;
           expect(this.appShell.container.same).notEquals(undefined);
           expect(this.appShell.container.same.name).notEquals(undefined);
-          expect(countBefore).notEquals(countAfter);
+          expect(console.error.callCount).notEquals(0);
         });
       });
     });
@@ -177,33 +167,36 @@ new function(o) {
     });
 
     it("will nest lazyioc containers if the service name uses dot notation", function() {
-      this.appShell = new AppShell();
+      const lazyioc = new AppShell();
       const Thing = function() {};
+      console.error = spyOn(console.error);
       const ThingProvider = function() {
         this.$get = function() {
           return new Thing();
         };
       };
-      this.appShell.provider("Util.Thing", ThingProvider);
-      expect(this.appShell.container.Util).notEquals(undefined);
-      expect(this.appShell.container.Util.ThingProvider).notEquals(undefined);
-      expect(this.appShell.container.Util.Thing).notEquals(undefined);
+      lazyioc.provider("Util.Thing", ThingProvider);
+      expect(lazyioc.container.Util).notEquals(undefined);
+      expect(lazyioc.container.Util.ThingProvider).notEquals(undefined);
+      expect(lazyioc.container.Util.Thing).notEquals(undefined);
+      expect(console.error.callCount).equals(0);
     });
 
     it("does not log an error if a service is added to a nested lazyioc with initialized services", function() {
-      this.appShell = new AppShell();
+      const lazyioc = new AppShell();
       const Thing = function() {};
       const ThingProvider = function() {
         this.$get = function() {
           return new Thing();
         };
       };
-      this.spy = spyOn(console.error);
-      this.appShell.provider("Util.Thing", ThingProvider);
-      expect(this.appShell.container.Util.Thing).notEquals(undefined);
-      this.appShell.provider("Util.OtherThing", ThingProvider);
-      expect(this.appShell.container.Util.OtherThing).notEquals(undefined);
-      expect(this.spy.callCount).equals(0);
+      console.error = spyOn(console.error);
+      lazyioc.provider("Some.Thing", ThingProvider);
+      expect(lazyioc.container.Some).notEquals(undefined);
+      expect(lazyioc.container.Some.Thing).notEquals(undefined);
+      lazyioc.provider("Some.OtherThing", ThingProvider);
+      expect(lazyioc.container.Some.OtherThing).notEquals(undefined);
+      expect(console.error.callCount).equals(0);
     });
 
     it("Allows falsey values returned by $get to remain defined when accessed multiple times", function() {

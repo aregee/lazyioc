@@ -14,7 +14,6 @@ export const ValueMixin = (superclass) => class extends superclass {
    value(name, val) {
     let parts = name.split('.');
     name = parts.pop();
-    console.log(this);
     this.defineValue.call(parts.reduce(this.setValueObject, this.container), name, val);
     return this;
   }

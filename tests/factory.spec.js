@@ -14,31 +14,26 @@ new function(o) {
   describe("AppShell#factory", function() {
     describe("when the same key is used twice", function() {
       clone.beforeEach(function() {
-        let logger = {};
-        logger.count = 0;
-        logger.error = err => {
-          console.count++;
-        };
-        Object.assign(console, logger);
-        this.b = new AppShell();
-        let spy = spyOn(console.error);
-        this.b.factory("same.name", function() {
+
+        this.lazyioc = new AppShell();
+        console.error = spyOn(console.error);
+        this.lazyioc.factory("same.name", function() {
           return function() {};
         });
       });
       describe("when the service has not yet been instantiated", function() {
         it("doesn't log an error", function() {
-          this.b.factory("same.name", function() {});
-          expect(console.count).equals(0);
+          this.lazyioc.factory("same.name", function() {});
+          expect(console.error.callCount).equals(0);
         });
       });
       describe("when the service has already been instantiated", function() {
         clone.beforeEach(function() {
-          this.b.container.same.name();
+          this.lazyioc.container.same.name();
         });
         it("logs an error", function() {
-          this.b.factory("same.name", function() {});
-          expect(console.count).equals(2); // two error warnings raised for `same` and `name` providers already registered
+          this.lazyioc.factory("same.name", function() {});
+          expect(console.error.callCount).equals(1); // two error warnings raised for `same` and `name` providers already registered
         });
       });
     });

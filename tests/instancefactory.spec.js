@@ -13,55 +13,51 @@ new function(o) {
    */
   describe("AppShell#instanceFactory", function() {
     describe("when the same key is used twice", function() {
+    
+      const lazyioc = new AppShell();
       clone.beforeEach(function() {
-        this.appShell = new AppShell();
-        let logger = {};
-        logger.count = 0;
-        logger.error = err => {
-          console.count++;
-        };
-        Object.assign(console, logger);
-        this.spy = spyOn(console.error);
-        this.appShell.instanceFactory("same.name", function() {
+        console.error = spyOn(console.error);
+        lazyioc.instanceFactory("same.name", function() {
           return {};
         });
       });
       describe("when the service has not yet been instantiated", function() {
         it("doesn't log an error", function() {
-          this.appShell.instanceFactory("same.name", function() {});
-          expect(console.count).equals(0);
+          lazyioc.instanceFactory("same.name", function() {});
+          expect(console.error.callCount).equals(0);
         });
       });
       describe("when the service has already been instantiated", function() {
         clone.beforeEach(function() {
-          this.appShell.container.same.name.instance();
+          lazyioc.container.same.name.instance();
         });
         it("logs an error", function() {
-          this.appShell.instanceFactory("same.name", function() {});
-          expect(console.count).equals(2);
+          let before = console.error.callCount;
+          lazyioc.instanceFactory("same.name", function() {});
+          expect(console.error.callCount).notEquals(before);
         });
       });
     });
     it("creates a provider instance on the container", function() {
-      const appShell = new AppShell();
+      const lazyioc = new AppShell();
       const ThingFactory = function() {};
-      appShell.instanceFactory("Thing", ThingFactory);
-      expect(appShell.container.ThingProvider).notEquals(undefined);
+      lazyioc.instanceFactory("Thing", ThingFactory);
+      expect(lazyioc.container.ThingProvider).notEquals(undefined);
     });
     it("creates an instance factory that gets passesed a container when it is requested", function() {
-      const appShell = new AppShell();
+      const lazyioc = new AppShell();
       const spy = spyOn(function() {
         return true;
       });
-      appShell.instanceFactory("Thing", spy);
-      expect(appShell.container.Thing).notEquals(undefined);
+      lazyioc.instanceFactory("Thing", spy);
+      expect(lazyioc.container.Thing).notEquals(undefined);
       expect(spy.callCount).equals(0);
-      appShell.container.Thing.instance();
-      expect(spy.args[0]).equals(appShell.container);
+      lazyioc.container.Thing.instance();
+      expect(spy.args[0]).equals(lazyioc.container);
     });
 
     it("will create new instances when instance is called", function() {
-      const appShell = new AppShell();
+      const lazyioc = new AppShell();
       let i = 0;
       const Thing = function() {
         i++;
@@ -69,10 +65,10 @@ new function(o) {
       const ThingFactory = function() {
         return new Thing();
       };
-      appShell.instanceFactory("Thing", ThingFactory);
-      expect(appShell.container.Thing.instance()).notEquals(undefined);
-      expect(appShell.container.Thing.instance()).notEquals(
-        appShell.container.Thing.instance()
+      lazyioc.instanceFactory("Thing", ThingFactory);
+      expect(lazyioc.container.Thing.instance()).notEquals(undefined);
+      expect(lazyioc.container.Thing.instance()).notEquals(
+        lazyioc.container.Thing.instance()
       );
       expect(i).equals(3);
     });

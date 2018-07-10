@@ -23,7 +23,6 @@ export const ProviderMixin = (superclass) => class extends superclass {
    * @return instance
    */
   provider(fullname, Provider) {
-
     let parts = fullname.split('.');
     if (this.providerMap[fullname] && parts.length === 1 && !this.container[fullname + 'Provider']) {
       return console.error(fullname + ' provider already instantiated.');
@@ -111,11 +110,12 @@ export const ProviderMixin = (superclass) => class extends superclass {
    * @return instance
    */
   createSubProvider(name, Provider, parts) {
-
     let iocinstance = this.getNestedModule.call(this, name);
-    this.factory(name, function SubProviderFactory() {
-      return iocinstance.container;
-    });
+    if(!this.providerMap[name]) {
+      this.factory(name, function SubProviderFactory() {
+        return iocinstance.container;
+      });
+    }
     return iocinstance.provider(parts.join('.'), Provider);
   }
 

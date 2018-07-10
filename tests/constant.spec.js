@@ -35,24 +35,24 @@ new function(o) {
     });
 
     it("will nest appShell containers if the name uses dot notation", function() {
-      let b = new AppShell("foo");
-      b.constant("nested", {});
-      b.constant("nested.thing", "123");
-      expect(b.container.nested.thing).equals("123");
+      let lazyioc = new AppShell("foo");
+      lazyioc.constant("nested", {});
+      lazyioc.constant("nested.thing", "123");
+      expect(lazyioc.container.nested.thing).equals("123");
 
       try {
-        b.container.nested.thing = "xyz";
+        lazyioc.container.nested.thing = "xyz";
       } catch (e) {
         // TypeError: Attempted to assign to readonly property.
       }
-      expect(b.container.nested.thing).equals("123");
+      expect(lazyioc.container.nested.thing).equals("123");
 
       try {
-        delete b.container.nested.thing;
+        delete lazyioc.container.nested.thing;
       } catch (e) {
         // TypeError: Unable to delete property.
       }
-      expect(b.container.nested.thing).equals("123");
+      expect(lazyioc.container.nested.thing).equals("123");
     });
   });
   clone.run();
