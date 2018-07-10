@@ -1,6 +1,6 @@
 {
   "name": "lazyioc",
-  "version": "1.0.2-0",
+  "version": "1.1.0",
   "description": "Lightweight vanilla javascript ioc container",
   "main": "bundle/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "release:fix": "npm run build && npm test && npm version patch",
     "release:feat": "npm run build && npm test && npm version minor",
     "release:break": "npm run build && npm test && npm version major",
-    "test": "npx ospec"  
+    "test": "npx ospec"
   },
   "keywords": [
     "vanilla",
