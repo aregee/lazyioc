@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -9,12 +9,12 @@ new function(o) {
   let spyOn = clone.spy;
 
   /**
-   * AppShell Instance Factory test suite
+   * LazyIoc Instance Factory test suite
    */
-  describe("AppShell#instanceFactory", function() {
+  describe("LazyIoc#instanceFactory", function() {
     describe("when the same key is used twice", function() {
     
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       clone.beforeEach(function() {
         console.error = spyOn(console.error);
         lazyioc.instanceFactory("same.name", function() {
@@ -39,13 +39,13 @@ new function(o) {
       });
     });
     it("creates a provider instance on the container", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const ThingFactory = function() {};
       lazyioc.instanceFactory("Thing", ThingFactory);
       expect(lazyioc.container.ThingProvider).notEquals(undefined);
     });
     it("creates an instance factory that gets passesed a container when it is requested", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const spy = spyOn(function() {
         return true;
       });
@@ -57,7 +57,7 @@ new function(o) {
     });
 
     it("will create new instances when instance is called", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       let i = 0;
       const Thing = function() {
         i++;

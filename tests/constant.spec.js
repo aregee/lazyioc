@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -11,7 +11,7 @@ new function(o) {
    */
   describe("lazyioc#constant", function() {
     it("creates an immutable property on the container", function() {
-      let appShell = new AppShell("constant");
+      let appShell = new LazyIoc("constant");
       let container = appShell.container;
 
       expect(typeof container.permanent).equals("undefined");
@@ -35,7 +35,7 @@ new function(o) {
     });
 
     it("will nest appShell containers if the name uses dot notation", function() {
-      let lazyioc = new AppShell("foo");
+      let lazyioc = new LazyIoc("foo");
       lazyioc.constant("nested", {});
       lazyioc.constant("nested.thing", "123");
       expect(lazyioc.container.nested.thing).equals("123");

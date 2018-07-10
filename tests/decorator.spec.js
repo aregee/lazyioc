@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -9,9 +9,9 @@ new function(o) {
   /**
    * lazyioc Decorator test suite
    */
-  describe("AppShell#decorator", function() {
+  describe("LazyIoc#decorator", function() {
     it("will add a decorator for every provider if no key is passed", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("Thing", function() {
         this.name = "Thing";
       });
@@ -27,7 +27,7 @@ new function(o) {
     });
 
     it("will add a decorator for a single type if a name is passed", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("Thing", function() {
         this.name = "Thing";
       });
@@ -43,7 +43,7 @@ new function(o) {
     });
 
     it("can handle dot notation keys", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("Util.Thing", function() {
         this.name = "Util Thing";
       });
@@ -55,7 +55,7 @@ new function(o) {
     });
 
     it("will decorate deeply nested services", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("Util.A.B.C.Thing", function() {
         this.name = "Util";
       });
@@ -69,7 +69,7 @@ new function(o) {
     });
 
     it("will allow decorators to be defined before services", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.decorator("Util.A.B.C.Thing", function(Service) {
         Service.name = "Util Deep FooBar";
         return Service;
@@ -84,7 +84,7 @@ new function(o) {
   });
   describe("container#$decorator", function() {
     it("will add a decorator for every provider if no key is passed", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("ns.Thing", function() {
         this.name = "Thing";
       });
@@ -100,7 +100,7 @@ new function(o) {
     });
 
     it("will add a decorator for a single type if a name is passed", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("ns.Thing", function() {
         this.name = "Thing";
       });
@@ -116,7 +116,7 @@ new function(o) {
     });
 
     it("can handle dot notation keys", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("ns.Util.Thing", function() {
         this.name = "Util Thing";
       });
@@ -128,7 +128,7 @@ new function(o) {
     });
 
     it("will decorate deeply nested services", function() {
-      let appShell = new AppShell("decorator");
+      let appShell = new LazyIoc("decorator");
       appShell.service("ns.Util.A.B.C.Thing", function() {
         this.name = "Util";
       });

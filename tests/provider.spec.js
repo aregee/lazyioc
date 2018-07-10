@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -14,7 +14,7 @@ new function(o) {
   describe("lazyioc#provider", function() {
     describe("when the same key is used twice", function() {
       clone.beforeEach(function() {
-        this.appShell = new AppShell("providerTest");
+        this.appShell = new LazyIoc("providerTest");
         console.error = spyOn(console.error);
         // this.spy = console.error;
         this.appShell.provider("same.name", function() {
@@ -46,7 +46,7 @@ new function(o) {
     });
 
     it("creates a provider instance on the container", function() {
-      const shell = new AppShell();
+      const shell = new LazyIoc();
       const ThingProvider = function() {};
       shell.provider("Thing", ThingProvider);
       expect(shell.container.ThingProvider instanceof ThingProvider).equals(
@@ -56,7 +56,7 @@ new function(o) {
 
     it("lazily creates the provider when accessed", function() {
       let i = 0;
-      const shell = new AppShell();
+      const shell = new LazyIoc();
       shell.provider("Thing", function() {
         i = ++i;
       });
@@ -65,7 +65,7 @@ new function(o) {
       expect(i).equals(1);
     });
     it("uses the $get method to create services, and passes a container", function() {
-      this.appShell = new AppShell();
+      this.appShell = new LazyIoc();
       const Thing = function() {};
       const thingProvider = function() {
         return new Thing();
@@ -82,7 +82,7 @@ new function(o) {
 
     describe("when $get throws an error", function() {
       clone.beforeEach(function() {
-        this.appShell = new AppShell();
+        this.appShell = new LazyIoc();
         this.e = new Error();
         const thingProvider = function() {
           throw this.e;
@@ -147,7 +147,7 @@ new function(o) {
           return new Thing();
         };
       };
-      this.appShell = new AppShell();
+      this.appShell = new LazyIoc();
       this.appShell.provider("Thing", ThingProvider);
       expect(i).equals(0);
       expect(this.appShell.container.Thing instanceof Thing).equals(true);
@@ -155,7 +155,7 @@ new function(o) {
     });
 
     it("removes the provider after the service is accessed", function() {
-      this.appShell = new AppShell();
+      this.appShell = new LazyIoc();
       this.appShell.provider("Thing", function() {
         this.$get = function() {
           return "test";
@@ -167,7 +167,7 @@ new function(o) {
     });
 
     it("will nest lazyioc containers if the service name uses dot notation", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       console.error = spyOn(console.error);
       const ThingProvider = function() {
@@ -183,7 +183,7 @@ new function(o) {
     });
 
     it("does not log an error if a service is added to a nested lazyioc with initialized services", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       const ThingProvider = function() {
         this.$get = function() {
@@ -200,7 +200,7 @@ new function(o) {
     });
 
     it("Allows falsey values returned by $get to remain defined when accessed multiple times", function() {
-      const appShell = new AppShell();
+      const appShell = new LazyIoc();
       const NullyProvider = function() {
         this.$get = function() {
           return null;
@@ -241,7 +241,7 @@ new function(o) {
     describe("lazyioc#resetProviders", function() {
       it("allows for already instantiated providers to be reset back to their registry", function() {
         let i = 0;
-        const appShell = new AppShell();
+        const appShell = new LazyIoc();
         const ThingProvider = function() {
           i = ++i;
           this.$get = function() {
@@ -259,7 +259,7 @@ new function(o) {
       it("allows for selectively resetting providers by name", function() {
         let i = 0;
         let j = 0;
-        const appShell = new AppShell();
+        const appShell = new LazyIoc();
         const FirstProvider = function() {
           i = ++i;
           this.$get = function() {
@@ -290,7 +290,7 @@ new function(o) {
       });
       it("allows for sub containers to re-initiate as well", function() {
         let i = 0;
-        const appShell = new AppShell();
+        const appShell = new LazyIoc();
         const ThingProvider = function() {
           i = ++i;
           this.$get = function() {
@@ -312,7 +312,7 @@ new function(o) {
         expect(i).equals(2);
       });
       it("will not break if a nested container has multiple children", function() {
-        const appShell = new AppShell();
+        const appShell = new LazyIoc();
         appShell.service("Thing.A", function() {
           this.name = "A";
         });
@@ -327,7 +327,7 @@ new function(o) {
       });
       it("allows for services with dependencies to be re-initiated with fresh instances", function() {
         let i = 0;
-        const appShell = new AppShell();
+        const appShell = new LazyIoc();
         const Thing = function(dep) {
           this.dep = dep;
         };

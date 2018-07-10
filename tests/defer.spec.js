@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -12,7 +12,7 @@ new function(o) {
    */
   describe("LazyIoc#defer", function() {
     it("will register functions to be executed later", function() {
-      const appShell = new AppShell();
+      const appShell = new LazyIoc();
       let executed = false;
 
       appShell.defer(function() {
@@ -26,7 +26,7 @@ new function(o) {
   });
   describe("LazyIoc#resolve", function() {
     it("will pass data to deferred functions", function() {
-      const appShell = new AppShell();
+      const appShell = new LazyIoc();
       let test;
 
       appShell.defer(function(value) {

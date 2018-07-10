@@ -1,19 +1,19 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
 
   clone.spec("lazyioc config", function() {
-    clone("expect AppShell to be a Function", function() {
-      clone(typeof AppShell).equals(
+    clone("expect LazyIoc to be a Function", function() {
+      clone(typeof LazyIoc).equals(
         "function"
       )("Appshell should be is a Function");
     });
 
-    clone("expect container to be instance of AppShell", function() {
-      let appShellInstance = new AppShell();
-      clone(appShellInstance instanceof AppShell).equals(
+    clone("expect container to be instance of LazyIoc", function() {
+      let appShellInstance = new LazyIoc();
+      clone(appShellInstance instanceof LazyIoc).equals(
         true
       )("Should be true");
     });
@@ -22,7 +22,7 @@ new function(o) {
       "expect to create new instance even if called  with same name",
       function() {
         /* jshint newcap: false */
-        let d1 = new AppShell("fooBar");
+        let d1 = new LazyIoc("fooBar");
         d1.provider("foo", function() {
           this.$get = function() {};
           return this;
@@ -30,7 +30,7 @@ new function(o) {
         d1.service("foo.bar", function() {
           return this;
         });
-        let d2 = new AppShell("fooBar");
+        let d2 = new LazyIoc("fooBar");
         clone(d1).notEquals(d2)("should be a new instance");
         /* jshint newcap: true */
       }
@@ -39,7 +39,7 @@ new function(o) {
     clone.spec("Provide a singleton intance forEach case", () => {
       let instance;
       clone.beforeEach(() => {
-        instance = new AppShell("parent");
+        instance = new LazyIoc("parent");
       });
 
       clone(

@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -11,11 +11,11 @@ new function(o) {
   /**
    * lazyIoc Factory test suite
    */
-  describe("AppShell#factory", function() {
+  describe("LazyIoc#factory", function() {
     describe("when the same key is used twice", function() {
       clone.beforeEach(function() {
 
-        this.lazyioc = new AppShell();
+        this.lazyioc = new LazyIoc();
         console.error = spyOn(console.error);
         this.lazyioc.factory("same.name", function() {
           return function() {};
@@ -38,13 +38,13 @@ new function(o) {
       });
     });
     it("creates a provider instance on the container", function() {
-      let inst = new AppShell();
+      let inst = new LazyIoc();
       const ThingFactory = function() {};
       inst.factory("Thing", ThingFactory);
       expect(inst.container.ThingProvider).notEquals(undefined);
     });
     it("creates services, and gets passesed a container", function() {
-      let inst = new AppShell();
+      let inst = new LazyIoc();
       let invoked = 0;
       let spy = clone.spy(() => {
         invoked++;
@@ -55,8 +55,8 @@ new function(o) {
       expect(invoked).equals(1);
     });
 
-    it("will nest AppShell containers if the service name uses dot notation", function() {
-      let b = new AppShell();
+    it("will nest LazyIoc containers if the service name uses dot notation", function() {
+      let b = new LazyIoc();
       let Thing = function() {};
       let ThingFactory = function() {
         return new Thing();

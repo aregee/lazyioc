@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -12,7 +12,7 @@ new function(o) {
    */
   describe("lazyioc#digest", function() {
     it("will get an instance of all services in the container", function() {
-      const appShell = new AppShell();
+      const appShell = new LazyIoc();
       const thinga = function() {
         this.foo = "a";
       };
@@ -29,7 +29,7 @@ new function(o) {
       expect(results[1].foo).equals("b");
     });
     it("will get an instance of all services in the container in the correct order", function() {
-      const appShell = new AppShell();
+      const appShell = new LazyIoc();
       const thinga = function() {
         this.foo = "a";
       };
@@ -46,7 +46,7 @@ new function(o) {
       expect(results[1].foo).equals("a");
     });
     it("can digest dot notation strings", function() {
-      const appShell = new AppShell();
+      const appShell = new LazyIoc();
       const Thing = function() {
         this.foo = "c";
       };

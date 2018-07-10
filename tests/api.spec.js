@@ -1,11 +1,11 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
 
   clone.spec("lazyioc API", function() {
-    const appShell = new AppShell();
+    const appShell = new LazyIoc();
     o.beforeEach(function() {
       acc = 0;
     });

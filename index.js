@@ -1,7 +1,7 @@
 import { mix } from './mixin'
-import { AppShell } from './LazyContainer'
+import { LazyIoc } from './LazyContainer'
 
 export {
     mix,
-    AppShell
+    LazyIoc
 }
