@@ -4,8 +4,12 @@
   "description": "Lightweight vanilla javascript ioc container",
   "main": "bundle/index.js",
   "scripts": {
-    "prod": "export NODE_SHELL_ENV=production && ./node_modules/webpack/bin/webpack.js --config webpack.config.js --progress ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:dev": "./node_modules/webpack/bin/webpack.js --config webpack.config.js --progress -w",
+    "build": "export NODE_SHELL_ENV=production && ./node_modules/webpack/bin/webpack.js --config webpack.config.js --progress ",
+    "release:fix": "npm run build && npm test && npm version patch",
+    "release:feat": "npm run build && npm test && npm version minor",
+    "release:break": "npm run build && npm test && npm version major",
+    "test": "npx ospec"  
   },
   "keywords": [
     "vanilla",

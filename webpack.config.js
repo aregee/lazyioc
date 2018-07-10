@@ -20,10 +20,7 @@ const output = {
 };
 
 const modules = {
-  loaders: [{
-      test: /\.html$/,
-      loader: 'html-loader'
-    },
+  loaders: [
     {
       test: /\.js$/,
       loader: 'babel-loader',
