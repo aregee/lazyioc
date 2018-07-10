@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -9,12 +9,12 @@ new function(o) {
   let spyOn = clone.spy;
 
   /**
-   * Bottle Factory test suite
+   * LazyIoc Factory test suite
    */
-  describe("Bottle#service", function() {
+  describe("LazyIoc#service", function() {
     describe("when the same key is used twice", function() {
       clone.beforeEach(function() {
-        this.lazyioc = new AppShell();
+        this.lazyioc = new LazyIoc();
         this.spy = spyOn(console.error);
         console.error = this.spy;
         this.lazyioc.service("same.name", function() {
@@ -38,14 +38,14 @@ new function(o) {
       });
     });
     it("creates a provider and service instance on the container", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       lazyioc.service("SomeThing", Thing);
       expect(lazyioc.container.SomeThingProvider).notEquals(undefined);
       expect(lazyioc.container.SomeThing).notEquals(undefined);
     });
     it("injects dependencies by passing them as string keys", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Thing = function(foo, bar) {
         this.foo = foo;
         this.bar = bar;
@@ -62,8 +62,8 @@ new function(o) {
       expect(lazyioc.container.Thing.bar).equals("bippity");
     });
 
-    it("will nest bottle containers if the service name uses dot notation", function() {
-      const lazyioc = new AppShell();
+    it("will nest lazyioc containers if the service name uses dot notation", function() {
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       lazyioc.service("Util.Thing", Thing);
       expect(lazyioc.container.Util).notEquals(undefined);
@@ -72,7 +72,7 @@ new function(o) {
     });
 
     it("can resolve dot-notation dependencies", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Thing = function(sub) {
         this.sub = sub;
       };
@@ -85,7 +85,7 @@ new function(o) {
 
     describe("strict service resolution", function() {
       clone.beforeEach(function() {
-        const lazyioc = new AppShell();
+        const lazyioc = new LazyIoc();
       });
       clone.afterEach(function() {
         lazyioc.config.strict = false;

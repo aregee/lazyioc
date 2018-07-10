@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -8,18 +8,18 @@ new function(o) {
   let expect = clone;
   let spyOn = clone.spy;
   /**
-   * Bottle Register test suite
+   * LazyIoc Register test suite
    */
-  describe("Bottle#register", function() {
+  describe("LazyIoc#register", function() {
     it("will register a service under the $name property", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       Thing.$name = "Thing";
       lazyioc.register(Thing);
       expect(lazyioc.container.Thing instanceof Thing).equals(true);
     });
     it("will inject a dependency provided by the $inject property", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Dep1 = function() {};
       const Thing = function(d1) {
         expect(d1 instanceof Dep1).equals(true);
@@ -32,7 +32,7 @@ new function(o) {
       expect(lazyioc.container.Thing).notEquals(undefined);
     });
     it("will inject multiple dependencies if $inject is an array", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Dep1 = function() {};
       const Dep2 = function() {};
       const Thing = function() {
@@ -46,8 +46,8 @@ new function(o) {
       lazyioc.register(Thing);
       expect(lazyioc.container.Thing).notEquals(undefined);
     });
-    it("defaults to Bottle#service if no $type is provided", function() {
-      const lazyioc = new AppShell();
+    it("defaults to LazyIoc#service if no $type is provided", function() {
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       Thing.$name = "Thing";
       Thing.$inject = ["A", "B"];
@@ -58,7 +58,7 @@ new function(o) {
       ).equals(true);
     });
     it("can register a factory", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const ThingFactory = function() {};
       ThingFactory.$name = "Thing";
       ThingFactory.$type = "factory";
@@ -71,7 +71,7 @@ new function(o) {
     });
 
     it("can register a provider", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const ThingProvider = function() {};
       ThingProvider.$name = "Thing";
       ThingProvider.$type = "provider";
@@ -83,7 +83,7 @@ new function(o) {
       expect(lazyioc.provider.args[1]).equals(ThingProvider);
     });
     it("can register a value", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const value = {
         $name: "someValue",
         $type: "value"
@@ -94,7 +94,7 @@ new function(o) {
       expect(lazyioc.value.args[1]).equals(value);
     });
     it("can nest definitions if dot notation is used", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const ThingA = function() {};
       const ThingB = function() {};
       ThingA.$name = "Util.ThingA";
@@ -108,7 +108,7 @@ new function(o) {
       expect(lazyioc.container.Util.ThingB instanceof ThingB).equals(true);
     });
     it("supports the $value property", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const value = {};
       const config = {
         $name: "someValue",
@@ -124,14 +124,14 @@ new function(o) {
   });
   describe("container#$register", function() {
     it("will register a service under the $name property", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       Thing.$name = "Thing";
       lazyioc.container.$register(Thing);
       expect(lazyioc.container.Thing instanceof Thing).equals(true);
     });
     it("will inject a dependency provided by the $inject property", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Dep1 = function() {};
       const Thing = function(d1) {
         expect(d1 instanceof Dep1).equals(true);
@@ -144,7 +144,7 @@ new function(o) {
       expect(lazyioc.container.Thing).notEquals(undefined);
     });
     it("will inject multiple dependencies if $inject is an array", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const Dep1 = function() {};
       const Dep2 = function() {};
       const Thing = function() {
@@ -158,8 +158,8 @@ new function(o) {
       lazyioc.container.$register(Thing);
       expect(lazyioc.container.Thing).notEquals(undefined);
     });
-    it("defaults to Bottle#service if no $type is provided", function() {
-      const lazyioc = new AppShell();
+    it("defaults to LazyIoc#service if no $type is provided", function() {
+      const lazyioc = new LazyIoc();
       const Thing = function() {};
       Thing.$name = "Thing";
       Thing.$inject = ["A", "B"];
@@ -173,7 +173,7 @@ new function(o) {
       expect(lazyioc.service.args[3]).equals("B");
     });
     it("can register a factory", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const ThingFactory = function() {};
       ThingFactory.$name = "Thing";
       ThingFactory.$type = "factory";
@@ -185,7 +185,7 @@ new function(o) {
       expect(lazyioc.factory.args[1]).equals(ThingFactory);
     });
     it("can register a provider", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const ThingProvider = function() {};
       ThingProvider.$name = "Thing";
       ThingProvider.$type = "provider";
@@ -197,7 +197,7 @@ new function(o) {
       expect(lazyioc.provider.args[1]).equals(ThingProvider);
     });
     it("can register a value", function() {
-      const lazyioc = new AppShell();
+      const lazyioc = new LazyIoc();
       const value = {
         $name: "someValue",
         $type: "value"

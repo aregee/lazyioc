@@ -5,7 +5,7 @@ import { Container, ProviderMixin, FactoryMixin, DecorateMixin, ConstantMixin, M
 
 const uuid = a=>a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, uuid);
 
-export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, DecorateMixin, ValueMixin, MiddlewareMixin, ConstantMixin) {
+export class LazyIoc extends mix(Container).with(ProviderMixin, FactoryMixin, DecorateMixin, ValueMixin, MiddlewareMixin, ConstantMixin) {
   constructor(name, store) {
     super(name, store);
 }
@@ -64,14 +64,14 @@ export class AppShell extends mix(Container).with(ProviderMixin, FactoryMixin, D
     if (typeof name === 'string') {
       let instance = this.modules[name];
       if (!instance) {
-        instance = new AppShell(name);
+        instance = new LazyIoc(name);
         this.modules[name] = instance;
         instance.constant('CONTAINER_NAME', name);
       }
       return instance;
     }
 
-    return new AppShell();
+    return new LazyIoc();
   }
 
 }

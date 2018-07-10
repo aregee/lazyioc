@@ -1,5 +1,5 @@
 const o = require("ospec");
-const { AppShell } = require("../bundle");
+const { LazyIoc } = require("../bundle");
 
 new function(o) {
   let clone = o.new();
@@ -13,7 +13,7 @@ new function(o) {
    */
   describe("lazyIoc#middleware", function() {
     it("middleware get executed every time a service is accessed", function() {
-      const lazyIoc = new AppShell();
+      const lazyIoc = new LazyIoc();
       let count = 0;
       lazyIoc.service("Thing", function() {
         this.name = "Thing";
@@ -29,7 +29,7 @@ new function(o) {
       expect(count).equals(2);
     });
     it("middleware get the service as the first param", function() {
-      const lazyIoc = new AppShell();
+      const lazyIoc = new LazyIoc();
       lazyIoc.service("Thing", function() {
         this.name = "Thing";
       });
@@ -41,7 +41,7 @@ new function(o) {
     });
 
     it("generic middleware run for all services", function() {
-      const lazyIoc = new AppShell();
+      const lazyIoc = new LazyIoc();
       lazyIoc.service("Thing1", function() {
         this.name = "Thing1";
       });
@@ -57,7 +57,7 @@ new function(o) {
     });
 
     it("can handle dot notation keys", function() {
-      const lazyIoc = new AppShell();
+      const lazyIoc = new LazyIoc();
       lazyIoc.service("Util.Thing", function() {
         this.name = "Util Thing";
       });
@@ -69,7 +69,7 @@ new function(o) {
     });
 
     it("can handle deeply nested dot notation keys", function() {
-      const lazyIoc = new AppShell();
+      const lazyIoc = new LazyIoc();
       lazyIoc.service("Util.A.B.C.Thing", function() {
         this.name = "Util Thing";
       });
@@ -81,7 +81,7 @@ new function(o) {
     });
 
     it("can register middleware before the service", function() {
-      const lazyIoc = new AppShell();
+      const lazyIoc = new LazyIoc();
       lazyIoc.middleware("Util.A.B.C.Thing", function(service, next) {
         service.name = "Middleware Thing";
         next();
@@ -93,7 +93,7 @@ new function(o) {
     });
 
     it("throw error when next(err)", function() {
-      const lazyIoc = new AppShell();
+      const lazyIoc = new LazyIoc();
       lazyIoc.service("Thing", function() {
         this.name = "Thing";
       });
