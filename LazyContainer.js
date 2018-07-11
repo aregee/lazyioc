@@ -74,4 +74,22 @@ export class LazyIoc extends mix(Container).with(ProviderMixin, FactoryMixin, De
     return new LazyIoc();
   }
 
+  static getModule(name) {
+    if (typeof name === 'string') {
+      let instance = LazyIoc.Singleton || this.modules[name];
+      if (!instance) {
+        instance = new LazyIoc(name);
+        LazyIoc.Singleton = instance;
+        this.modules[name] = instance;
+        instance.constant('CONTAINER_NAME', name);
+      }
+      return instance;
+    }
+    if(LazyIoc.Singleton) {
+      return LazyIoc.Singleton;
+    } else {
+      return new LazyIoc(name);
+    }
+  }
 }
+LazyIoc.Singleton = null;

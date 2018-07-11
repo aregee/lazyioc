@@ -2,7 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const isProd = process.env.NODE_SHELL_ENV === 'production';
-
+const CompressionPlugin = require("compression-webpack-plugin")
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+ 
 const devtool = isProd ?
   'source-map' :
   'cheap-module-eval-source-map';
@@ -45,7 +48,6 @@ const devServer = {
   disableHostCheck: true
 };
 
-
 // Production configs and setup
 if (isProd) {
   plugins.push(
@@ -58,23 +60,11 @@ if (isProd) {
       minimize: true,
       debug: false
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        screw_ie8: true,
-        conditionals: true,
-        unused: true,
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-      },
-      output: {
-        comments: false,
-      },
-    })
+    new UglifyJsPlugin(),
+    new CompressionPlugin({
+    algorithm: 'gzip'
+    }),
+    // new BundleAnalyzerPlugin()
   );
 }
 
