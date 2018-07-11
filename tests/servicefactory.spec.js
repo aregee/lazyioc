@@ -14,19 +14,19 @@ new function(o) {
   describe("LazyIoc#serviceFactory", function() {
     it("injects dependencies to a service factory", function() {
       const lazyIoc = new LazyIoc();
-      const createThing = function(foo, bar) {
+      const createEntity = function(foo, bar) {
         return { foo: foo, bar: bar };
       };
-      lazyIoc.serviceFactory("Thing", createThing, "foo", "bar");
+      lazyIoc.serviceFactory("Entity", createEntity, "foo", "bar");
       lazyIoc.service("foo", function() {
         this.name = "foo";
       });
       lazyIoc.value("bar", "bippity");
 
-      expect(lazyIoc.container.Thing).notEquals(undefined);
-      expect(lazyIoc.container.Thing.foo).notEquals(undefined);
-      expect(lazyIoc.container.Thing.foo.name).equals("foo");
-      expect(lazyIoc.container.Thing.bar).equals("bippity");
+      expect(lazyIoc.container.Entity).notEquals(undefined);
+      expect(lazyIoc.container.Entity.foo).notEquals(undefined);
+      expect(lazyIoc.container.Entity.foo.name).equals("foo");
+      expect(lazyIoc.container.Entity.bar).equals("bippity");
     });
   });
 

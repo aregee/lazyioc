@@ -12,12 +12,12 @@ new function(o) {
    * lazyioc List test suite
    */
   describe("lazyioc#list", function() {
-    it("will return an empty array if no container is provided", function() {
+    it("should return an empty array if no container is provided", function() {
       const lazyioc = new LazyIoc();
       expect(lazyioc.list() instanceof Array).equals(true);
       expect(lazyioc.list().length).equals(0);
     });
-    it("will return a list of registered services from a passed container", function() {
+    it("should return a list of registered services from a passed container", function() {
       const lazyioc = new LazyIoc();
       lazyioc.service("A", function() {});
       lazyioc.service("B", function() {});
@@ -27,7 +27,7 @@ new function(o) {
       expect(list.indexOf("B")).notEquals(-1);
     });
 
-    it("will exclude shell methods from the returned list", function() {
+    it("should exclude shell methods from the returned list", function() {
       const lazyioc = new LazyIoc();
       lazyioc.service("A", function() {});
       lazyioc.service("B", function() {});
@@ -40,12 +40,12 @@ new function(o) {
   });
 
   describe("prototype#list", function() {
-    it("will return an empty array if no services have been registered", function() {
+    it("should return an empty array if no services have been registered", function() {
       const lazyioc = new LazyIoc();
       expect(lazyioc.list() instanceof Array).equals(true);
       expect(lazyioc.list().length).equals(0);
     });
-    it("will return a list of registered services", function() {
+    it("should return a list of registered services", function() {
       const lazyioc = new LazyIoc();
       lazyioc.service("A", function() {});
       lazyioc.service("B", function() {});
@@ -54,7 +54,7 @@ new function(o) {
       expect(list.indexOf("A")).notEquals(-1);
       expect(list.indexOf("B")).notEquals(-1);
     });
-    it("will exclude container methods from the returned list", function() {
+    it("should exclude container methods from the returned list", function() {
       const lazyioc = new LazyIoc();
       lazyioc.service("A", function() {});
       lazyioc.service("B", function() {});
@@ -66,12 +66,12 @@ new function(o) {
     });
   });
   describe("container#$list", function() {
-    it("will return an empty array if no services have been registered", function() {
+    it("should return an empty array if no services have been registered", function() {
       const lazyioc = new LazyIoc();
       expect(lazyioc.container.$list() instanceof Array).equals(true);
       expect(lazyioc.container.$list().length).equals(0);
     });
-    it("will return a list of registered services", function() {
+    it("should return a list of registered services", function() {
       const lazyioc = new LazyIoc();
       lazyioc.service("A", function() {});
       lazyioc.service("B", function() {});
@@ -80,7 +80,7 @@ new function(o) {
       expect(list.indexOf("A")).notEquals(-1);
       expect(list.indexOf("B")).notEquals(-1);
     });
-    it("will exclude container methods from the returned list", function() {
+    it("should exclude container methods from the returned list", function() {
 
       const lazyioc = new LazyIoc();
       lazyioc.service("A", function() {});
@@ -91,7 +91,7 @@ new function(o) {
       expect(list.indexOf("$list")).equals(-1);
       expect(list.length).equals(2);
     });
-    it("will work with nested containers", function() {
+    it("should work with nested containers", function() {
       
       const lazyioc = new LazyIoc();
       lazyioc.service("test.A", function() {});

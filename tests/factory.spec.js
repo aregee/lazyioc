@@ -39,9 +39,9 @@ new function(o) {
     });
     it("creates a provider instance on the container", function() {
       let inst = new LazyIoc();
-      const ThingFactory = function() {};
-      inst.factory("Thing", ThingFactory);
-      expect(inst.container.ThingProvider).notEquals(undefined);
+      const EntityFactory = function() {};
+      inst.factory("Entity", EntityFactory);
+      expect(inst.container.EntityProvider).notEquals(undefined);
     });
     it("creates services, and gets passesed a container", function() {
       let inst = new LazyIoc();
@@ -50,21 +50,21 @@ new function(o) {
         invoked++;
         return { active: true };
       });
-      inst.factory("Thing", spy);
-      expect(inst.container.Thing.active).equals(true);
+      inst.factory("Entity", spy);
+      expect(inst.container.Entity.active).equals(true);
       expect(invoked).equals(1);
     });
 
-    it("will nest LazyIoc containers if the service name uses dot notation", function() {
-      let b = new LazyIoc();
-      let Thing = function() {};
-      let ThingFactory = function() {
-        return new Thing();
+    it("should nest LazyIoc containers if the service name uses dot notation", function() {
+      let lazyIoc = new LazyIoc();
+      let Entity = function() {};
+      let EntityFactory = function() {
+        return new Entity();
       };
-      b.factory("Util.Thing", ThingFactory);
-      expect(b.container.Util).notEquals(undefined);
-      expect(b.container.Util.ThingProvider).notEquals(undefined);
-      expect(b.container.Util.Thing).notEquals(undefined);
+      lazyIoc.factory("Generic.Entity", EntityFactory);
+      expect(lazyIoc.container.Generic).notEquals(undefined);
+      expect(lazyIoc.container.Generic.EntityProvider).notEquals(undefined);
+      expect(lazyIoc.container.Generic.Entity).notEquals(undefined);
     });
   });
 

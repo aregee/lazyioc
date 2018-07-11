@@ -40,35 +40,35 @@ new function(o) {
     });
     it("creates a provider instance on the container", function() {
       const lazyioc = new LazyIoc();
-      const ThingFactory = function() {};
-      lazyioc.instanceFactory("Thing", ThingFactory);
-      expect(lazyioc.container.ThingProvider).notEquals(undefined);
+      const EntityFactory = function() {};
+      lazyioc.instanceFactory("Entity", EntityFactory);
+      expect(lazyioc.container.EntityProvider).notEquals(undefined);
     });
     it("creates an instance factory that gets passesed a container when it is requested", function() {
       const lazyioc = new LazyIoc();
       const spy = spyOn(function() {
         return true;
       });
-      lazyioc.instanceFactory("Thing", spy);
-      expect(lazyioc.container.Thing).notEquals(undefined);
+      lazyioc.instanceFactory("Entity", spy);
+      expect(lazyioc.container.Entity).notEquals(undefined);
       expect(spy.callCount).equals(0);
-      lazyioc.container.Thing.instance();
+      lazyioc.container.Entity.instance();
       expect(spy.args[0]).equals(lazyioc.container);
     });
 
-    it("will create new instances when instance is called", function() {
+    it("should create new instances when instance is called", function() {
       const lazyioc = new LazyIoc();
       let i = 0;
-      const Thing = function() {
+      const Entity = function() {
         i++;
       };
-      const ThingFactory = function() {
-        return new Thing();
+      const EntityFactory = function() {
+        return new Entity();
       };
-      lazyioc.instanceFactory("Thing", ThingFactory);
-      expect(lazyioc.container.Thing.instance()).notEquals(undefined);
-      expect(lazyioc.container.Thing.instance()).notEquals(
-        lazyioc.container.Thing.instance()
+      lazyioc.instanceFactory("Entity", EntityFactory);
+      expect(lazyioc.container.Entity.instance()).notEquals(undefined);
+      expect(lazyioc.container.Entity.instance()).notEquals(
+        lazyioc.container.Entity.instance()
       );
       expect(i).equals(3);
     });

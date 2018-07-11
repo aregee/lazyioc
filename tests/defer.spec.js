@@ -11,30 +11,30 @@ new function(o) {
    * lazyioc Defer Resolve test suite
    */
   describe("LazyIoc#defer", function() {
-    it("will register functions to be executed later", function() {
-      const appShell = new LazyIoc();
+    it("should register functions to be executed later", function() {
+      const lazyIoc = new LazyIoc();
       let executed = false;
 
-      appShell.defer(function() {
+      lazyIoc.defer(function() {
         executed = true;
       });
 
       expect(executed).equals(false);
-      appShell.resolve();
+      lazyIoc.resolve();
       expect(executed).equals(true);
     });
   });
   describe("LazyIoc#resolve", function() {
-    it("will pass data to deferred functions", function() {
-      const appShell = new LazyIoc();
+    it("should pass data to deferred functions", function() {
+      const lazyIoc = new LazyIoc();
       let test;
 
-      appShell.defer(function(value) {
+      lazyIoc.defer(function(value) {
         test = value;
       });
 
       expect(test).notEquals("Cookie");
-      appShell.resolve("Cookie");
+      lazyIoc.resolve("Cookie");
       expect(test).equals("Cookie");
     });
   });

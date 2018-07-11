@@ -11,76 +11,76 @@ new function(o) {
    * LazyIoc Register test suite
    */
   describe("LazyIoc#register", function() {
-    it("will register a service under the $name property", function() {
+    it("should register a service under the $name property", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function() {};
-      Thing.$name = "Thing";
-      lazyioc.register(Thing);
-      expect(lazyioc.container.Thing instanceof Thing).equals(true);
+      const Entity = function() {};
+      Entity.$name = "Entity";
+      lazyioc.register(Entity);
+      expect(lazyioc.container.Entity instanceof Entity).equals(true);
     });
-    it("will inject a dependency provided by the $inject property", function() {
+    it("should inject a dependency provided by the $inject property", function() {
       const lazyioc = new LazyIoc();
       const Dep1 = function() {};
-      const Thing = function(d1) {
+      const Entity = function(d1) {
         expect(d1 instanceof Dep1).equals(true);
       };
-      Thing.$name = "Thing";
-      Thing.$inject = "Dep1";
+      Entity.$name = "Entity";
+      Entity.$inject = "Dep1";
 
       lazyioc.service("Dep1", Dep1);
-      lazyioc.register(Thing);
-      expect(lazyioc.container.Thing).notEquals(undefined);
+      lazyioc.register(Entity);
+      expect(lazyioc.container.Entity).notEquals(undefined);
     });
-    it("will inject multiple dependencies if $inject is an array", function() {
+    it("should inject multiple dependencies if $inject is an array", function() {
       const lazyioc = new LazyIoc();
       const Dep1 = function() {};
       const Dep2 = function() {};
-      const Thing = function() {
+      const Entity = function() {
         expect(arguments.length).equals(2);
       };
-      Thing.$name = "Thing";
-      Thing.$inject = ["Dep1", "Dep2"];
+      Entity.$name = "Entity";
+      Entity.$inject = ["Dep1", "Dep2"];
 
       lazyioc.service("Dep1", Dep1);
       lazyioc.service("Dep2", Dep2);
-      lazyioc.register(Thing);
-      expect(lazyioc.container.Thing).notEquals(undefined);
+      lazyioc.register(Entity);
+      expect(lazyioc.container.Entity).notEquals(undefined);
     });
     it("defaults to LazyIoc#service if no $type is provided", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function() {};
-      Thing.$name = "Thing";
-      Thing.$inject = ["A", "B"];
+      const Entity = function() {};
+      Entity.$name = "Entity";
+      Entity.$inject = ["A", "B"];
       lazyioc.service = spyOn(lazyioc.service);
-      lazyioc.register(Thing);
+      lazyioc.register(Entity);
       expect(
-        lazyioc.service.args.length === ["Thing", Thing, "A", "B"].length
+        lazyioc.service.args.length === ["Entity", Entity, "A", "B"].length
       ).equals(true);
     });
     it("can register a factory", function() {
       const lazyioc = new LazyIoc();
-      const ThingFactory = function() {};
-      ThingFactory.$name = "Thing";
-      ThingFactory.$type = "factory";
+      const EntityFactory = function() {};
+      EntityFactory.$name = "Entity";
+      EntityFactory.$type = "factory";
 
       lazyioc.factory = spyOn(lazyioc.factory);
 
-      lazyioc.register(ThingFactory);
-      expect(lazyioc.factory.args[0]).equals("Thing");
-      expect(lazyioc.factory.args[1]).equals(ThingFactory);
+      lazyioc.register(EntityFactory);
+      expect(lazyioc.factory.args[0]).equals("Entity");
+      expect(lazyioc.factory.args[1]).equals(EntityFactory);
     });
 
     it("can register a provider", function() {
       const lazyioc = new LazyIoc();
-      const ThingProvider = function() {};
-      ThingProvider.$name = "Thing";
-      ThingProvider.$type = "provider";
+      const EntityProvider = function() {};
+      EntityProvider.$name = "Entity";
+      EntityProvider.$type = "provider";
 
       lazyioc.provider = spyOn(lazyioc.provider);
 
-      lazyioc.register(ThingProvider);
-      expect(lazyioc.provider.args[0]).equals("Thing");
-      expect(lazyioc.provider.args[1]).equals(ThingProvider);
+      lazyioc.register(EntityProvider);
+      expect(lazyioc.provider.args[0]).equals("Entity");
+      expect(lazyioc.provider.args[1]).equals(EntityProvider);
     });
     it("can register a value", function() {
       const lazyioc = new LazyIoc();
@@ -95,17 +95,17 @@ new function(o) {
     });
     it("can nest definitions if dot notation is used", function() {
       const lazyioc = new LazyIoc();
-      const ThingA = function() {};
-      const ThingB = function() {};
-      ThingA.$name = "Util.ThingA";
-      ThingB.$name = "Util.ThingB";
+      const EntityA = function() {};
+      const EntityB = function() {};
+      EntityA.$name = "Generic.EntityA";
+      EntityB.$name = "Generic.EntityB";
 
-      lazyioc.register(ThingA);
-      lazyioc.register(ThingB);
+      lazyioc.register(EntityA);
+      lazyioc.register(EntityB);
 
-      expect(lazyioc.container.Util).notEquals(undefined);
-      expect(lazyioc.container.Util.ThingA instanceof ThingA).equals(true);
-      expect(lazyioc.container.Util.ThingB instanceof ThingB).equals(true);
+      expect(lazyioc.container.Generic).notEquals(undefined);
+      expect(lazyioc.container.Generic.EntityA instanceof EntityA).equals(true);
+      expect(lazyioc.container.Generic.EntityB instanceof EntityB).equals(true);
     });
     it("supports the $value property", function() {
       const lazyioc = new LazyIoc();
@@ -123,78 +123,78 @@ new function(o) {
     });
   });
   describe("container#$register", function() {
-    it("will register a service under the $name property", function() {
+    it("should register a service under the $name property", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function() {};
-      Thing.$name = "Thing";
-      lazyioc.container.$register(Thing);
-      expect(lazyioc.container.Thing instanceof Thing).equals(true);
+      const Entity = function() {};
+      Entity.$name = "Entity";
+      lazyioc.container.$register(Entity);
+      expect(lazyioc.container.Entity instanceof Entity).equals(true);
     });
-    it("will inject a dependency provided by the $inject property", function() {
+    it("should inject a dependency provided by the $inject property", function() {
       const lazyioc = new LazyIoc();
       const Dep1 = function() {};
-      const Thing = function(d1) {
+      const Entity = function(d1) {
         expect(d1 instanceof Dep1).equals(true);
       };
-      Thing.$name = "Thing";
-      Thing.$inject = "Dep1";
+      Entity.$name = "Entity";
+      Entity.$inject = "Dep1";
 
       lazyioc.service("Dep1", Dep1);
-      lazyioc.container.$register(Thing);
-      expect(lazyioc.container.Thing).notEquals(undefined);
+      lazyioc.container.$register(Entity);
+      expect(lazyioc.container.Entity).notEquals(undefined);
     });
-    it("will inject multiple dependencies if $inject is an array", function() {
+    it("should inject multiple dependencies if $inject is an array", function() {
       const lazyioc = new LazyIoc();
       const Dep1 = function() {};
       const Dep2 = function() {};
-      const Thing = function() {
+      const Entity = function() {
         expect(arguments.length).equals(2);
       };
-      Thing.$name = "Thing";
-      Thing.$inject = ["Dep1", "Dep2"];
+      Entity.$name = "Entity";
+      Entity.$inject = ["Dep1", "Dep2"];
 
       lazyioc.service("Dep1", Dep1);
       lazyioc.service("Dep2", Dep2);
-      lazyioc.container.$register(Thing);
-      expect(lazyioc.container.Thing).notEquals(undefined);
+      lazyioc.container.$register(Entity);
+      expect(lazyioc.container.Entity).notEquals(undefined);
     });
     it("defaults to LazyIoc#service if no $type is provided", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function() {};
-      Thing.$name = "Thing";
-      Thing.$inject = ["A", "B"];
+      const Entity = function() {};
+      Entity.$name = "Entity";
+      Entity.$inject = ["A", "B"];
 
       lazyioc.service = spyOn(lazyioc.service);
 
-      lazyioc.container.$register(Thing);
-      expect(lazyioc.service.args[0]).equals("Thing");
-      expect(lazyioc.service.args[1]).equals(Thing);
+      lazyioc.container.$register(Entity);
+      expect(lazyioc.service.args[0]).equals("Entity");
+      expect(lazyioc.service.args[1]).equals(Entity);
       expect(lazyioc.service.args[2]).equals("A");
       expect(lazyioc.service.args[3]).equals("B");
     });
     it("can register a factory", function() {
       const lazyioc = new LazyIoc();
-      const ThingFactory = function() {};
-      ThingFactory.$name = "Thing";
-      ThingFactory.$type = "factory";
+      const EntityFactory = function() {};
+      EntityFactory.$name = "Entity";
+      EntityFactory.$type = "factory";
 
       lazyioc.factory = spyOn(lazyioc.factory);
 
-      lazyioc.container.$register(ThingFactory);
-      expect(lazyioc.factory.args[0]).equals("Thing");
-      expect(lazyioc.factory.args[1]).equals(ThingFactory);
+      lazyioc.container.$register(EntityFactory);
+      expect(lazyioc.factory.args[0]).equals("Entity");
+      expect(lazyioc.factory.args[1]).equals(EntityFactory);
     });
     it("can register a provider", function() {
       const lazyioc = new LazyIoc();
-      const ThingProvider = function() {};
-      ThingProvider.$name = "Thing";
-      ThingProvider.$type = "provider";
+      const EntityProvider = function() {};
+      EntityProvider.$name = "Entity";
+      EntityProvider.$type = "provider";
 
       lazyioc.provider = spyOn(lazyioc.provider);
 
-      lazyioc.container.$register(ThingProvider);
-      expect(lazyioc.provider.args[0]).equals("Thing");
-      expect(lazyioc.provider.args[1]).equals(ThingProvider);
+      lazyioc.container.$register(EntityProvider);
+      expect(lazyioc.provider.args[0]).equals("Entity");
+      expect(lazyioc.provider.args[1]).equals(EntityProvider);
     });
     it("can register a value", function() {
       const lazyioc = new LazyIoc();

@@ -15,95 +15,95 @@ new function(o) {
     it("middleware get executed every time a service is accessed", function() {
       const lazyIoc = new LazyIoc();
       let count = 0;
-      lazyIoc.service("Thing", function() {
-        this.name = "Thing";
+      lazyIoc.service("Entity", function() {
+        this.name = "Entity";
       });
-      lazyIoc.middleware("Thing", function(service, next) {
+      lazyIoc.middleware("Entity", function(service, next) {
         count++;
         next();
       });
       expect(count).equals(0);
-      expect(lazyIoc.container.Thing).notEquals(undefined);
+      expect(lazyIoc.container.Entity).notEquals(undefined);
       expect(count).equals(1);
-      expect(lazyIoc.container.Thing).notEquals(undefined);
+      expect(lazyIoc.container.Entity).notEquals(undefined);
       expect(count).equals(2);
     });
     it("middleware get the service as the first param", function() {
       const lazyIoc = new LazyIoc();
-      lazyIoc.service("Thing", function() {
-        this.name = "Thing";
+      lazyIoc.service("Entity", function() {
+        this.name = "Entity";
       });
-      lazyIoc.middleware("Thing", function(service, next) {
-        service.name = "Something New";
+      lazyIoc.middleware("Entity", function(service, next) {
+        service.name = "Someentity New";
         next();
       });
-      expect(lazyIoc.container.Thing.name).equals("Something New");
+      expect(lazyIoc.container.Entity.name).equals("Someentity New");
     });
 
     it("generic middleware run for all services", function() {
       const lazyIoc = new LazyIoc();
-      lazyIoc.service("Thing1", function() {
-        this.name = "Thing1";
+      lazyIoc.service("Entity1", function() {
+        this.name = "Entity1";
       });
-      lazyIoc.service("Thing2", function() {
-        this.name = "Thing2";
+      lazyIoc.service("Entity2", function() {
+        this.name = "Entity2";
       });
       lazyIoc.middleware(function(service, next) {
         service.name = "Changed";
         next();
       });
-      expect(lazyIoc.container.Thing1.name).equals("Changed");
-      expect(lazyIoc.container.Thing2.name).equals("Changed");
+      expect(lazyIoc.container.Entity1.name).equals("Changed");
+      expect(lazyIoc.container.Entity2.name).equals("Changed");
     });
 
     it("can handle dot notation keys", function() {
       const lazyIoc = new LazyIoc();
-      lazyIoc.service("Util.Thing", function() {
-        this.name = "Util Thing";
+      lazyIoc.service("Generic.Entity", function() {
+        this.name = "Generic Entity";
       });
-      lazyIoc.middleware("Util.Thing", function(service, next) {
-        service.name = "Middleware Thing";
+      lazyIoc.middleware("Generic.Entity", function(service, next) {
+        service.name = "Middleware Entity";
         next();
       });
-      expect(lazyIoc.container.Util.Thing.name).equals("Middleware Thing");
+      expect(lazyIoc.container.Generic.Entity.name).equals("Middleware Entity");
     });
 
     it("can handle deeply nested dot notation keys", function() {
       const lazyIoc = new LazyIoc();
-      lazyIoc.service("Util.A.B.C.Thing", function() {
-        this.name = "Util Thing";
+      lazyIoc.service("Generic.A.B.C.Entity", function() {
+        this.name = "Generic Entity";
       });
-      lazyIoc.middleware("Util.A.B.C.Thing", function(service, next) {
-        service.name = "Middleware Thing";
+      lazyIoc.middleware("Generic.A.B.C.Entity", function(service, next) {
+        service.name = "Middleware Entity";
         next();
       });
-      expect(lazyIoc.container.Util.A.B.C.Thing.name).equals("Middleware Thing");
+      expect(lazyIoc.container.Generic.A.B.C.Entity.name).equals("Middleware Entity");
     });
 
     it("can register middleware before the service", function() {
       const lazyIoc = new LazyIoc();
-      lazyIoc.middleware("Util.A.B.C.Thing", function(service, next) {
-        service.name = "Middleware Thing";
+      lazyIoc.middleware("Generic.A.B.C.Entity", function(service, next) {
+        service.name = "Middleware Entity";
         next();
       });
-      lazyIoc.service("Util.A.B.C.Thing", function() {
-        this.name = "Util Thing";
+      lazyIoc.service("Generic.A.B.C.Entity", function() {
+        this.name = "Generic Entity";
       });
-      expect(lazyIoc.container.Util.A.B.C.Thing.name).equals("Middleware Thing");
+      expect(lazyIoc.container.Generic.A.B.C.Entity.name).equals("Middleware Entity");
     });
 
     it("throw error when next(err)", function() {
       const lazyIoc = new LazyIoc();
-      lazyIoc.service("Thing", function() {
-        this.name = "Thing";
+      lazyIoc.service("Entity", function() {
+        this.name = "Entity";
       });
-      this.e = new Error("Thing error");
+      this.e = new Error("Entity error");
       let context = this;
-      lazyIoc.middleware("Thing", function(service, next) {
+      lazyIoc.middleware("Entity", function(service, next) {
         next(context.e);
       });
       try {
-        lazyIoc.container.Thing.name;
+        lazyIoc.container.Entity.name;
       } catch (error) {
         expect(error).equals(context.e);  
       }

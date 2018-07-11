@@ -8,12 +8,12 @@ new function(o) {
     clone("expect LazyIoc to be a Function", function() {
       clone(typeof LazyIoc).equals(
         "function"
-      )("Appshell should be is a Function");
+      )("lazyIoc should be is a Function");
     });
 
     clone("expect container to be instance of LazyIoc", function() {
-      let appShellInstance = new LazyIoc();
-      clone(appShellInstance instanceof LazyIoc).equals(
+      let lazyIocInstance = new LazyIoc();
+      clone(lazyIocInstance instanceof LazyIoc).equals(
         true
       )("Should be true");
     });
@@ -43,7 +43,7 @@ new function(o) {
       });
 
       clone(
-        "expect to return new module if appShellInstance.module is invoked ",
+        "expect to return new module if lazyIocInstance.module is invoked ",
         () => {
           let one = instance.module("one");
           let two = instance.module("two");
@@ -53,7 +53,7 @@ new function(o) {
       );
 
       clone(
-        "expect to return same module if appShellInstance.module is invoked with already exsting module name",
+        "expect to return same module if lazyIocInstance.module is invoked with already exsting module name",
         () => {
           clone(instance.module("one")).equals(instance.module("one"))(
             "should not be a new instance"
@@ -62,7 +62,7 @@ new function(o) {
         }
       );
       clone(
-        "will not return the same instance with the same name after #clear",
+        "should not return the same instance with the same name after #clear",
         function() {
           let child = instance.module("child");
           clone(instance.module("child")).equals(child);
@@ -72,7 +72,7 @@ new function(o) {
       );
 
       clone(
-        "will return the same instance when another named instance is cleared",
+        "should return the same instance when another named instance is cleared",
         function() {
           let foo = instance.module("Foo");
           instance.module("Bar");
@@ -82,19 +82,19 @@ new function(o) {
         }
       );
 
-      clone("will not have name if not passed a name parameter", function() {
+      clone("should not have name if not passed a name parameter", function() {
         let childInst = instance.module();
         clone(childInst.container.CONTAINER_NAME).equals(undefined);
       });
       clone(
-        "will make the instance name available when a name is passed",
+        "should make the instance name available when a name is passed",
         function() {
           let childInst = instance.module("Baz");
           clone(childInst.container.CONTAINER_NAME).equals("Baz");
         }
       );
       clone(
-        "will return the same instance when a name is passed, even if the string == false",
+        "should return the same instance when a name is passed, even if the string == false",
         function() {
           clone(instance.module("")).equals(instance.module(""));
           clone(instance.module("0")).equals(instance.module("0"));

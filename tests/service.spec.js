@@ -39,48 +39,48 @@ new function(o) {
     });
     it("creates a provider and service instance on the container", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function() {};
-      lazyioc.service("SomeThing", Thing);
-      expect(lazyioc.container.SomeThingProvider).notEquals(undefined);
-      expect(lazyioc.container.SomeThing).notEquals(undefined);
+      const Entity = function() {};
+      lazyioc.service("SomeEntity", Entity);
+      expect(lazyioc.container.SomeEntityProvider).notEquals(undefined);
+      expect(lazyioc.container.SomeEntity).notEquals(undefined);
     });
     it("injects dependencies by passing them as string keys", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function(foo, bar) {
+      const Entity = function(foo, bar) {
         this.foo = foo;
         this.bar = bar;
       };
-      lazyioc.service("Thing", Thing, "foo", "bar");
+      lazyioc.service("Entity", Entity, "foo", "bar");
       lazyioc.service("foo", function() {
         this.name = "foo";
       });
       lazyioc.value("bar", "bippity");
 
-      expect(lazyioc.container.Thing).notEquals(undefined);
-      expect(lazyioc.container.Thing.foo).notEquals(undefined);
-      expect(lazyioc.container.Thing.foo.name).equals("foo");
-      expect(lazyioc.container.Thing.bar).equals("bippity");
+      expect(lazyioc.container.Entity).notEquals(undefined);
+      expect(lazyioc.container.Entity.foo).notEquals(undefined);
+      expect(lazyioc.container.Entity.foo.name).equals("foo");
+      expect(lazyioc.container.Entity.bar).equals("bippity");
     });
 
-    it("will nest lazyioc containers if the service name uses dot notation", function() {
+    it("should nest lazyioc containers if the service name uses dot notation", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function() {};
-      lazyioc.service("Util.Thing", Thing);
-      expect(lazyioc.container.Util).notEquals(undefined);
-      expect(lazyioc.container.Util.ThingProvider).notEquals(undefined);
-      expect(lazyioc.container.Util.Thing).notEquals(undefined);
+      const Entity = function() {};
+      lazyioc.service("Generic.Entity", Entity);
+      expect(lazyioc.container.Generic).notEquals(undefined);
+      expect(lazyioc.container.Generic.EntityProvider).notEquals(undefined);
+      expect(lazyioc.container.Generic.Entity).notEquals(undefined);
     });
 
     it("can resolve dot-notation dependencies", function() {
       const lazyioc = new LazyIoc();
-      const Thing = function(sub) {
+      const Entity = function(sub) {
         this.sub = sub;
       };
-      const SubThing = function() {};
-      lazyioc.service("Thing", Thing, "Nest.SubThing");
-      lazyioc.service("Nest.SubThing", SubThing);
-      expect(lazyioc.container.Thing.sub).notEquals(undefined);
-      expect(lazyioc.container.Thing.sub instanceof SubThing).equals(true);
+      const SubEntity = function() {};
+      lazyioc.service("Entity", Entity, "Nest.SubEntity");
+      lazyioc.service("Nest.SubEntity", SubEntity);
+      expect(lazyioc.container.Entity.sub).notEquals(undefined);
+      expect(lazyioc.container.Entity.sub instanceof SubEntity).equals(true);
     });
 
     describe("strict service resolution", function() {
@@ -91,26 +91,26 @@ new function(o) {
       clone.afterEach(function() {
         LazyIoc.config.strict = false;
       });
-      it("will not care if a service is undefined when strict mode is off", function() {
-        const Thing = function(phantom) {
+      it("should not care if a service is undefined when strict mode is off", function() {
+        const Entity = function(phantom) {
           this.phantom = phantom;
         };
 
         LazyIoc.config.strict = false;
-        lazyioc.service("Thing", Thing, "PhantomService");
-        expect(lazyioc.container.Thing).notEquals(undefined);
-        expect(lazyioc.container.Thing.phantom).equals(undefined);
+        lazyioc.service("Entity", Entity, "PhantomService");
+        expect(lazyioc.container.Entity).notEquals(undefined);
+        expect(lazyioc.container.Entity.phantom).equals(undefined);
       });
-      it("will throw an exception if a service is undefined in strict mode", function() {
-        const Thing = function(phantom) {
+      it("should throw an exception if a service is undefined in strict mode", function() {
+        const Entity = function(phantom) {
           this.phantom = phantom;
         };
 
         LazyIoc.config.strict = true;
-        lazyioc.service("AnotherThing", Thing, "PhantomService");
+        lazyioc.service("AnotherEntity", Entity, "PhantomService");
 
         const test = function() {
-          return lazyioc.container.AnotherThing;
+          return lazyioc.container.AnotherEntity;
         };
         try {
           test();

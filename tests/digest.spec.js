@@ -11,48 +11,48 @@ new function(o) {
    * lazyioc Digest test suite
    */
   describe("lazyioc#digest", function() {
-    it("will get an instance of all services in the container", function() {
-      const appShell = new LazyIoc();
-      const thinga = function() {
+    it("should get an instance of all services in the container", function() {
+      const lazyIoc = new LazyIoc();
+      const entitya = function() {
         this.foo = "a";
       };
-      const thingb = function() {
+      const entityb = function() {
         this.foo = "b";
       };
       let results;
-      appShell.service("a", thinga);
-      appShell.service("b", thingb);
-      results = appShell.digest(["a", "b"]);
+      lazyIoc.service("a", entitya);
+      lazyIoc.service("b", entityb);
+      results = lazyIoc.digest(["a", "b"]);
       expect(results[0].foo).notEquals(undefined);
       expect(results[0].foo).equals("a");
       expect(results[1].foo).notEquals(undefined);
       expect(results[1].foo).equals("b");
     });
-    it("will get an instance of all services in the container in the correct order", function() {
-      const appShell = new LazyIoc();
-      const thinga = function() {
+    it("should get an instance of all services in the container in the correct order", function() {
+      const lazyIoc = new LazyIoc();
+      const entitya = function() {
         this.foo = "a";
       };
-      const thingb = function() {
+      const entityb = function() {
         this.foo = "b";
       };
       let results;
-      appShell.service("a", thinga);
-      appShell.service("b", thingb);
-      results = appShell.digest(["b", "a"]);
+      lazyIoc.service("a", entitya);
+      lazyIoc.service("b", entityb);
+      results = lazyIoc.digest(["b", "a"]);
       expect(results[0].foo).notEquals(undefined);
       expect(results[0].foo).equals("b");
       expect(results[1].foo).notEquals(undefined);
       expect(results[1].foo).equals("a");
     });
     it("can digest dot notation strings", function() {
-      const appShell = new LazyIoc();
-      const Thing = function() {
+      const lazyIoc = new LazyIoc();
+      const Entity = function() {
         this.foo = "c";
       };
       let results;
-      appShell.service("Util.Thing", Thing);
-      results = appShell.digest(["Util.Thing"]);
+      lazyIoc.service("Generic.Entity", Entity);
+      results = lazyIoc.digest(["Generic.Entity"]);
       expect(results[0].foo).notEquals(undefined);
       expect(results[0].foo).equals("c");
     });

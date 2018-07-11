@@ -10,134 +10,134 @@ new function(o) {
    * lazyioc Decorator test suite
    */
   describe("LazyIoc#decorator", function() {
-    it("will add a decorator for every provider if no key is passed", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("Thing", function() {
-        this.name = "Thing";
+    it("should add a decorator for every provider if no key is passed", function() {
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("Entity", function() {
+        this.name = "Entity";
       });
-      appShell.service("Prop", function() {
+      lazyIoc.service("Prop", function() {
         this.name = "Prop";
       });
-      appShell.decorator(function(Service) {
+      lazyIoc.decorator(function(Service) {
         Service.name = "FooBar";
         return Service;
       });
-      expect(appShell.container.Thing.name).equals("FooBar");
-      expect(appShell.container.Prop.name).equals("FooBar");
+      expect(lazyIoc.container.Entity.name).equals("FooBar");
+      expect(lazyIoc.container.Prop.name).equals("FooBar");
     });
 
-    it("will add a decorator for a single type if a name is passed", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("Thing", function() {
-        this.name = "Thing";
+    it("should add a decorator for a single type if a name is passed", function() {
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("Entity", function() {
+        this.name = "Entity";
       });
-      appShell.service("Prop", function() {
+      lazyIoc.service("Prop", function() {
         this.name = "Prop";
       });
-      appShell.decorator("Thing", function(Service) {
+      lazyIoc.decorator("Entity", function(Service) {
         Service.name = "FooBar";
         return Service;
       });
-      expect(appShell.container.Thing.name).equals("FooBar");
-      expect(appShell.container.Prop.name).equals("Prop");
+      expect(lazyIoc.container.Entity.name).equals("FooBar");
+      expect(lazyIoc.container.Prop.name).equals("Prop");
     });
 
     it("can handle dot notation keys", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("Util.Thing", function() {
-        this.name = "Util Thing";
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("Generic.Entity", function() {
+        this.name = "Generic Entity";
       });
-      appShell.decorator("Util.Thing", function(Service) {
-        Service.name = "Util FooBar";
+      lazyIoc.decorator("Generic.Entity", function(Service) {
+        Service.name = "Generic FooBar";
         return Service;
       });
-      expect(appShell.container.Util.Thing.name).equals("Util FooBar");
+      expect(lazyIoc.container.Generic.Entity.name).equals("Generic FooBar");
     });
 
-    it("will decorate deeply nested services", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("Util.A.B.C.Thing", function() {
-        this.name = "Util";
+    it("should decorate deeply nested services", function() {
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("Generic.A.B.C.Entity", function() {
+        this.name = "Generic";
       });
-      appShell.decorator("Util.A.B.C.Thing", function(Service) {
-        Service.name = "Util Deep FooBar";
+      lazyIoc.decorator("Generic.A.B.C.Entity", function(Service) {
+        Service.name = "Generic Deep FooBar";
         return Service;
       });
-      expect(appShell.container.Util.A.B.C.Thing.name).equals(
-        "Util Deep FooBar"
+      expect(lazyIoc.container.Generic.A.B.C.Entity.name).equals(
+        "Generic Deep FooBar"
       );
     });
 
-    it("will allow decorators to be defined before services", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.decorator("Util.A.B.C.Thing", function(Service) {
-        Service.name = "Util Deep FooBar";
+    it("should allow decorators to be defined before services", function() {
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.decorator("Generic.A.B.C.Entity", function(Service) {
+        Service.name = "Generic Deep FooBar";
         return Service;
       });
-      appShell.service("Util.A.B.C.Thing", function() {
-        this.name = "Util";
+      lazyIoc.service("Generic.A.B.C.Entity", function() {
+        this.name = "Generic";
       });
-      expect(appShell.container.Util.A.B.C.Thing.name).equals(
-        "Util Deep FooBar"
+      expect(lazyIoc.container.Generic.A.B.C.Entity.name).equals(
+        "Generic Deep FooBar"
       );
     });
   });
   describe("container#$decorator", function() {
-    it("will add a decorator for every provider if no key is passed", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("ns.Thing", function() {
-        this.name = "Thing";
+    it("should add a decorator for every provider if no key is passed", function() {
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("ns.Entity", function() {
+        this.name = "Entity";
       });
-      appShell.service("ns.Prop", function() {
+      lazyIoc.service("ns.Prop", function() {
         this.name = "Prop";
       });
-      appShell.container.ns.$decorator(function(Service) {
+      lazyIoc.container.ns.$decorator(function(Service) {
         Service.name = "FooBar";
         return Service;
       });
-      expect(appShell.container.ns.Thing.name).equals("FooBar");
-      expect(appShell.container.ns.Prop.name).equals("FooBar");
+      expect(lazyIoc.container.ns.Entity.name).equals("FooBar");
+      expect(lazyIoc.container.ns.Prop.name).equals("FooBar");
     });
 
-    it("will add a decorator for a single type if a name is passed", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("ns.Thing", function() {
-        this.name = "Thing";
+    it("should add a decorator for a single type if a name is passed", function() {
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("ns.Entity", function() {
+        this.name = "Entity";
       });
-      appShell.service("ns.Prop", function() {
+      lazyIoc.service("ns.Prop", function() {
         this.name = "Prop";
       });
-      appShell.container.ns.$decorator("Thing", function(Service) {
+      lazyIoc.container.ns.$decorator("Entity", function(Service) {
         Service.name = "FooBar";
         return Service;
       });
-      expect(appShell.container.ns.Thing.name).equals("FooBar");
-      expect(appShell.container.ns.Prop.name).equals("Prop");
+      expect(lazyIoc.container.ns.Entity.name).equals("FooBar");
+      expect(lazyIoc.container.ns.Prop.name).equals("Prop");
     });
 
     it("can handle dot notation keys", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("ns.Util.Thing", function() {
-        this.name = "Util Thing";
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("ns.Generic.Entity", function() {
+        this.name = "Generic Entity";
       });
-      appShell.container.ns.$decorator("Util.Thing", function(Service) {
-        Service.name = "Util FooBar";
+      lazyIoc.container.ns.$decorator("Generic.Entity", function(Service) {
+        Service.name = "Generic FooBar";
         return Service;
       });
-      expect(appShell.container.ns.Util.Thing.name).equals("Util FooBar");
+      expect(lazyIoc.container.ns.Generic.Entity.name).equals("Generic FooBar");
     });
 
-    it("will decorate deeply nested services", function() {
-      let appShell = new LazyIoc("decorator");
-      appShell.service("ns.Util.A.B.C.Thing", function() {
-        this.name = "Util";
+    it("should decorate deeply nested services", function() {
+      let lazyIoc = new LazyIoc("decorator");
+      lazyIoc.service("ns.Generic.A.B.C.Entity", function() {
+        this.name = "Generic";
       });
-      appShell.container.ns.$decorator("Util.A.B.C.Thing", function(Service) {
-        Service.name = "Util Deep FooBar";
+      lazyIoc.container.ns.$decorator("Generic.A.B.C.Entity", function(Service) {
+        Service.name = "Generic Deep FooBar";
         return Service;
       });
-      expect(appShell.container.ns.Util.A.B.C.Thing.name).equals(
-        "Util Deep FooBar"
+      expect(lazyIoc.container.ns.Generic.A.B.C.Entity.name).equals(
+        "Generic Deep FooBar"
       );
     });
   });

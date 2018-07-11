@@ -11,12 +11,12 @@ new function(o) {
    */
   describe("lazyioc#constant", function() {
     it("creates an immutable property on the container", function() {
-      let appShell = new LazyIoc("constant");
-      let container = appShell.container;
+      let lazyIoc = new LazyIoc("constant");
+      let container = lazyIoc.container;
 
       expect(typeof container.permanent).equals("undefined");
 
-      appShell.constant("permanent", "abc");
+      lazyIoc.constant("permanent", "abc");
       expect(container.permanent).equals("abc");
 
       try {
@@ -34,25 +34,25 @@ new function(o) {
       expect(container.permanent).equals("abc");
     });
 
-    it("will nest appShell containers if the name uses dot notation", function() {
+    it("should nest lazyIoc containers if the name uses dot notation", function() {
       let lazyioc = new LazyIoc("foo");
       lazyioc.constant("nested", {});
-      lazyioc.constant("nested.thing", "123");
-      expect(lazyioc.container.nested.thing).equals("123");
+      lazyioc.constant("nested.entity", "123");
+      expect(lazyioc.container.nested.entity).equals("123");
 
       try {
-        lazyioc.container.nested.thing = "xyz";
+        lazyioc.container.nested.entity = "xyz";
       } catch (e) {
         // TypeError: Attempted to assign to readonly property.
       }
-      expect(lazyioc.container.nested.thing).equals("123");
+      expect(lazyioc.container.nested.entity).equals("123");
 
       try {
-        delete lazyioc.container.nested.thing;
+        delete lazyioc.container.nested.entity;
       } catch (e) {
         // TypeError: Unable to delete property.
       }
-      expect(lazyioc.container.nested.thing).equals("123");
+      expect(lazyioc.container.nested.entity).equals("123");
     });
   });
   clone.run();
