@@ -85,17 +85,18 @@ new function(o) {
 
     describe("strict service resolution", function() {
       clone.beforeEach(function() {
-        const lazyioc = new LazyIoc();
+        LazyIoc.config.strict = false;
+        const lazyioc = LazyIoc.getModule();
       });
       clone.afterEach(function() {
-        lazyioc.config.strict = false;
+        LazyIoc.config.strict = false;
       });
       it("will not care if a service is undefined when strict mode is off", function() {
         const Thing = function(phantom) {
           this.phantom = phantom;
         };
 
-        lazyioc.config.strict = false;
+        LazyIoc.config.strict = false;
         lazyioc.service("Thing", Thing, "PhantomService");
         expect(lazyioc.container.Thing).notEquals(undefined);
         expect(lazyioc.container.Thing.phantom).equals(undefined);
@@ -105,7 +106,7 @@ new function(o) {
           this.phantom = phantom;
         };
 
-        lazyioc.config.strict = true;
+        LazyIoc.config.strict = true;
         lazyioc.service("AnotherThing", Thing, "PhantomService");
 
         const test = function() {

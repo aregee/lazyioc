@@ -135,7 +135,7 @@ export const ProviderMixin = (superclass) => class extends superclass {
    * @return instance
    */
   register(Obj) {
-    var value = Obj.$value === undefined ? Obj : Obj.$value;
+    let value = Obj.$value === undefined ? Obj : Obj.$value;
     return this[Obj.$type || 'service'].apply(this, [Obj.$name, value].concat(Obj.$inject || []));
   }
 
@@ -184,28 +184,5 @@ export const ProviderMixin = (superclass) => class extends superclass {
     });
 
     return this;
-  }
-
-
-  /**
-   * Register a service inside a generic factory.
-   *
-   * @param String name
-   * @param Function Service
-   * @return Module
-   */
-  service(name, Service) {
-    let deps = arguments.length > 2 ? slice.call(arguments, 2) : null;
-    let iocinstance = this;
-    return this.factory.call(this, name, function GenericFactory() {
-      let ServiceCopy = Service;
-      if (deps) {
-        let bounderService = iocinstance.getNestedService.bind(iocinstance)
-        let args = deps.map(bounderService, iocinstance.container);
-        args.unshift(Service);
-        ServiceCopy = Service.bind.apply(Service, args);
-      }
-      return new ServiceCopy();
-    });
   }
 }

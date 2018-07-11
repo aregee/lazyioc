@@ -5,6 +5,7 @@ import { DecorateMixin } from './decorator';
 import { ConstantMixin } from './constant';
 import { MiddlewareMixin } from './middleware';
 import { ValueMixin} from './value';
+import { ServiceMixin } from './service';
 
 export {
   Container,
@@ -13,5 +14,6 @@ export {
   DecorateMixin,
   ConstantMixin,
   MiddlewareMixin,
-  ValueMixin
+  ValueMixin,
+  ServiceMixin
 }

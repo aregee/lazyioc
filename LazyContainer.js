@@ -1,13 +1,13 @@
 import { mix } from './mixin';
 
-import { Container, ProviderMixin, FactoryMixin, DecorateMixin, ConstantMixin, MiddlewareMixin, ValueMixin } from './interfaces';
+import { Container, ProviderMixin, ServiceMixin, FactoryMixin, DecorateMixin, ConstantMixin, MiddlewareMixin, ValueMixin } from './mixins';
 
 
 const uuid = a=>a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, uuid);
 
-export class LazyIoc extends mix(Container).with(ProviderMixin, FactoryMixin, DecorateMixin, ValueMixin, MiddlewareMixin, ConstantMixin) {
-  constructor(name, store) {
-    super(name, store);
+export class LazyIoc extends mix(Container).with(ProviderMixin, ServiceMixin, FactoryMixin, DecorateMixin, ValueMixin, MiddlewareMixin, ConstantMixin) {
+  constructor(name) {
+    super(name);
 }
 
   /**
@@ -23,7 +23,7 @@ export class LazyIoc extends mix(Container).with(ProviderMixin, FactoryMixin, De
    */
   getNested(obj, prop) {
     let service = obj[prop] ? obj[prop]: obj.container[prop];
-    if (service === undefined && this.config.strict) {
+    if (service === undefined && LazyIoc.config.strict) {
       throw new Error('Container was unable to resolve a service.  `' + prop + '` is undefined.');
     }
     return service;
@@ -92,4 +92,5 @@ export class LazyIoc extends mix(Container).with(ProviderMixin, FactoryMixin, De
     }
   }
 }
+LazyIoc.config = {strict:true};
 LazyIoc.Singleton = null;
